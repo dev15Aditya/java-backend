@@ -1,0 +1,2 @@
+## Problem Statement
+Design a calculator with basic functionalities (addition, subtraction, multiplication, division) that can store the last five operations and allow users to modify any stored operation.
