@@ -1,0 +1,1 @@
+## URL shortner: Given a long url, return a short url, on hitting that short url redirect to long URL.
