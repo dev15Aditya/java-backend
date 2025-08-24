@@ -1,6 +1,6 @@
 public class App {
     public static void main(String[] args) throws Exception {
-        HashMap map = new HashMap();
+        HashMap<Integer, Integer> map = new HashMap<>();
         map.createMap();
 
         map.put(1, 10);

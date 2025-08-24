@@ -1,48 +1,53 @@
-public class HashMap {
-    Node[] map;
-    public void createMap(){
-        map = new Node[1000];
+public class HashMap<K, V> {
+    Node<K, V>[] map;
+    final private int capacity = 1000;
 
-        for(int i = 0; i<1000; i++){
-            map[i] = new Node(-1, -1);
-        }
+    @SuppressWarnings("unchecked")
+    public void createMap(){
+        map = (Node<K, V>[]) new Node[capacity];
     }
 
-    public void put(int key, int value){
+    public void put(K key, V value){
         int hashKey = hash(key);
-        Node head = map[hashKey];
+
+        if(map[hashKey] == null) {
+            map[hashKey] = new Node<>(null, null);
+        }
+
+        Node<K, V> head = map[hashKey];
 
         while(head.next != null){
-            if(head.next.key == key){
+            if(head.next.key.equals(key)){
                 head.next.val = value;
                 return;
             }
             head = head.next;
         }
 
-        head.next = new Node(key, value);
+        head.next = new Node<>(key, value);
     }
 
-    public int get(int key){
+    public V get(K key){
         int hashKey = hash(key);
-        Node head = map[hashKey];
+        Node<K, V> head = map[hashKey];
 
         while(head != null){
-            if(head.key == key){
+            if(head.key.equals(key)){
                 return head.val;
             }
 
             head = head.next;
         }
 
-        return -1;
+        return null;
     }
-    public void remove(int key){
+
+    public void remove(K key){
         int hashKey = hash(key);
-        Node head = map[hashKey];
+        Node<K, V> head = map[hashKey];
 
         while(head.next != null){
-            if(head.next.key == key){
+            if(head.next.key.equals(key)){
                 head.next = head.next.next;
                 return;
             }
@@ -50,7 +55,7 @@ public class HashMap {
         }
     }
 
-    private int hash(int key){
-        return key % 1000;
+    private int hash(K key){
+        return Math.abs(key.hashCode() % capacity);
     }
 }
