@@ -26,12 +26,12 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> gelAllUsers() {
+    public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @PostMapping
-    public User postMapping(@RequestBody User user) {
+    public User addUser(@RequestBody User user) {
         return userService.addUser(user);
     }
     
