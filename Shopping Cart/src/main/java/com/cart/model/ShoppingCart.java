@@ -26,6 +26,10 @@ public class ShoppingCart {
     private List<CartItem> items = new ArrayList<>();
     private BigDecimal totalAmount = BigDecimal.ZERO;
 
+    public ShoppingCart(String userId) {
+        this.userId = userId;
+    }
+
     public void addItem(CartItem item) {
         items.add(item);
         recalculateTotal();

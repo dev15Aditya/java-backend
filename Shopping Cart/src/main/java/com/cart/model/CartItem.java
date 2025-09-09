@@ -17,4 +17,12 @@ public class CartItem {
     private Integer quantity;
     private BigDecimal unitPrice;
     private BigDecimal totalPrice;
+
+    public CartItem(Product product, Integer quantity) {
+        this.productId = product.getId();
+        this.productName = product.getName();
+        this.quantity = quantity;
+        this.unitPrice = product.getPrice();
+        this.totalPrice = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+    }
 }
