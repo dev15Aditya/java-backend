@@ -18,13 +18,13 @@ public class ShoppingCartService {
     private ProductService productService;
 
     @Autowired
-    private ShoppingCartRepository shoppingCartRepository;
+    private ShoppingCartRepository cartRepository;
 
     public ShoppingCart getOrCreateCart(String userId){
-        return shoppingCartRepository.findByUserId(userId)
+        return cartRepository.findByUserId(userId)
             .orElseGet(() -> {
                 ShoppingCart newCart = new ShoppingCart(userId);
-                return shoppingCartRepository.save(newCart);
+                return cartRepository.save(newCart);
             });
     }
 
@@ -45,11 +45,12 @@ public class ShoppingCartService {
                 CartItem item = existingItem.get();
                 item.setQuantity(item.getQuantity() + quantity);
                 item.setTotalPrice(item.getUnitPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+                cart.recalculateTotal();
             } else {
                 cart.addItem(newItem);
             }
 
-            return shoppingCartRepository.save(cart);
+            return cartRepository.save(cart);
         }
         throw new RuntimeException("Product not found");
     }
@@ -57,22 +58,22 @@ public class ShoppingCartService {
     public ShoppingCart removeItemFromCart(String userId, String productId){
         ShoppingCart cart = getOrCreateCart(userId);
         cart.removeItem(productId);
-        return shoppingCartRepository.save(cart);
+        return cartRepository.save(cart);
     }
 
     public ShoppingCart updateItemQuantity(String userId, String productId, Integer quantity){
         ShoppingCart cart = getOrCreateCart(userId);
         cart.updateItemQuantity(productId, quantity);
-        return shoppingCartRepository.save(cart);
+        return cartRepository.save(cart);
     }
 
     public void clearCart(String userId){
         ShoppingCart cart = getOrCreateCart(userId);
         cart.clearCart();
-        shoppingCartRepository.save(cart);
+        cartRepository.save(cart);
     }
 
     public Optional<ShoppingCart> getCart(String userId){
-        return shoppingCartRepository.findByUserId(userId);
+        return cartRepository.findByUserId(userId);
     }
 }

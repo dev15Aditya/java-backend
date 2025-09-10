@@ -7,13 +7,11 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Document(collection="shopping_cart")
 @Getter
 @Setter
@@ -56,7 +54,7 @@ public class ShoppingCart {
         totalAmount = BigDecimal.ZERO;
     }
 
-    private void recalculateTotal() {
+    public void recalculateTotal() {
         totalAmount = items.stream()
             .map(CartItem::getTotalPrice)
             .reduce(BigDecimal.ZERO, BigDecimal::add);

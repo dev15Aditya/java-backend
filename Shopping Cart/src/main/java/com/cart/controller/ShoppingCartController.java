@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cart.model.CartItem;
 import com.cart.model.ShoppingCart;
 import com.cart.service.ShoppingCartService;
 
@@ -29,10 +31,9 @@ public class ShoppingCartController {
     @PostMapping("/{userId}/add")
     public ShoppingCart addItemToCart(
         @PathVariable String userId,
-        @RequestParam String productId,
-        @RequestParam Integer quantity
+        @RequestBody CartItem item
     ) {
-        return shoppingCartService.addItemToCart(userId, productId, quantity);
+        return shoppingCartService.addItemToCart(userId, item.getProductId(), item.getQuantity());
     }
 
     @DeleteMapping("/{userId}/remove")
@@ -43,7 +44,7 @@ public class ShoppingCartController {
         return shoppingCartService.removeItemFromCart(userId, productId);
     } 
 
-      @PutMapping("/{userId}/update")
+    @PutMapping("/{userId}/update")
     public ShoppingCart updateItemQuantity(
             @PathVariable String userId,
             @RequestParam String productId,
