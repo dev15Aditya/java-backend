@@ -13,6 +13,7 @@ public class PaymentService {
 
     public Payment processPayment(String bookingId, double amount) {
         Payment payment = new Payment(UUID.randomUUID().toString(), bookingId, amount);
+        
 
         // simulation
         boolean success = new Random().nextBoolean();

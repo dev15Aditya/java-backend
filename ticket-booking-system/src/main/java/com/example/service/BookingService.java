@@ -10,6 +10,7 @@ import com.example.enums.PaymentStatus;
 import com.example.enums.UpdateSeat;
 import com.example.model.Booking;
 import com.example.model.Payment;
+import com.example.model.Seat;
 import com.example.model.Show;
 
 public class BookingService {
@@ -27,7 +28,7 @@ public class BookingService {
         }
 
         String bookingId = UUID.randomUUID().toString();
-        Booking booking = new Booking(bookingId, userId, show.getId(), seatIds);
+        Booking booking = new Booking(bookingId, userId, show, seatIds);
 
         bookings.add(booking);
 
@@ -38,14 +39,31 @@ public class BookingService {
     public void confirmBooking(String bookingId, double amount){
         for(Booking booking: bookings){
             if(booking.getId().equals(bookingId)){
+                Show show = booking.getShow();
+                List<Seat> bookedSeats = new ArrayList<>(show.getSeats());
+                double totalPrice = 0;
+
+                for(String seatId: booking.getSeatIds()){
+                    for(Seat seat: bookedSeats){
+                        if(seatId.equals(seat.getId())){
+                            totalPrice += seat.getPrice();
+                        }
+                    }
+                }
+
+                if(totalPrice > amount){
+                    System.out.println("Insufficient Balance. Required amount: " + totalPrice);
+                    return;
+                }
+
                 Payment payment = paymentService.processPayment(bookingId, amount);
 
                 if(payment.getStatus() == PaymentStatus.SUCCESS){
                     booking.setStatus(BookingStatus.CONFIRMED);
-                    System.out.println("Booking: " + bookingId + " confirmed");
+                    System.out.println("Booking: " + bookingId + " | Status: " + BookingStatus.CONFIRMED);
                 } else {
                     booking.setStatus(BookingStatus.CANCELLED);
-                    System.out.println("Booking: " + bookingId + " cancelled");
+                    System.out.println("Booking: " + bookingId + " | Status: " + BookingStatus.CANCELLED);
                 }
 
                 return;
@@ -117,7 +135,7 @@ public class BookingService {
         for(Booking booking: bookings){
             System.out.println("Booking: " + booking.getId()+ 
                 ", User: " + booking.getUserId() + 
-                ", Show: " + booking.getShowId() +
+                ", Show: " + booking.getShow().getId() +
                 ", Seats: " + booking.getSeatIds() +
                 ", Status: " + booking.getStatus());
         }

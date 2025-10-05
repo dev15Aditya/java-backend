@@ -29,7 +29,7 @@ public class Main {
 
 
         Booking b1 = bookingService.createBooking("user1", show, Arrays.asList("A1", "A2"));
-        Booking b2 = bookingService.createBooking("user2", show, Arrays.asList("A3"));
+        // Booking b2 = bookingService.createBooking("user2", show, Arrays.asList("A3"));
 
         bookingService.viewAllBooking();
         // bookingService.cancelBooking(b1.getId());
@@ -37,7 +37,7 @@ public class Main {
         // bookingService.seatUpdate(b2.getId(), "A1", UpdateSeat.ADD);
         
         bookingService.confirmBooking(b1.getId(), 500);
-        bookingService.confirmBooking(b2.getId(), 500);
+        // bookingService.confirmBooking(b2.getId(), 100);
         bookingService.viewAllBooking();
     }
 }
