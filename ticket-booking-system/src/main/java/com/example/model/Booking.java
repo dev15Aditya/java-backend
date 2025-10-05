@@ -30,4 +30,8 @@ public class Booking {
     public List<String> getSeatIds() {
         return seatIds;
     }
+
+    public void setSeatIds(List<String> seatIds) {
+        this.seatIds = seatIds;
+    }
 }
