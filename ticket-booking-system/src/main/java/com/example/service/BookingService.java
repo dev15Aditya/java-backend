@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.example.enums.UpdateSeat;
 import com.example.model.Booking;
 import com.example.model.Show;
-import com.example.model.UpdateSeat;
 
 public class BookingService {
     private final List<Booking> bookings = new ArrayList<>();

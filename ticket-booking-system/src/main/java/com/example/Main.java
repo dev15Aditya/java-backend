@@ -3,10 +3,10 @@ package com.example;
 import java.util.Arrays;
 import java.util.List;
 
+import com.example.enums.UpdateSeat;
 import com.example.model.Booking;
 import com.example.model.Seat;
 import com.example.model.Show;
-import com.example.model.UpdateSeat;
 import com.example.service.BookingService;
 
 public class Main {
