@@ -3,7 +3,6 @@ package com.example;
 import java.util.Arrays;
 import java.util.List;
 
-import com.example.enums.UpdateSeat;
 import com.example.model.Booking;
 import com.example.model.Seat;
 import com.example.model.Show;
@@ -11,6 +10,8 @@ import com.example.service.BookingService;
 
 public class Main {
     public static void main(String[] args) {
+        BookingService bookingService = new BookingService();
+
         List<Seat> seats = Arrays.asList(
             new Seat("A1", 200),
             new Seat("A2", 200),
@@ -26,15 +27,17 @@ public class Main {
         // System.out.println(show.getMovieName());
         // System.out.println(show.getSeats().size());
 
-        BookingService bookingService = new BookingService();
 
         Booking b1 = bookingService.createBooking("user1", show, Arrays.asList("A1", "A2"));
         Booking b2 = bookingService.createBooking("user2", show, Arrays.asList("A3"));
 
         bookingService.viewAllBooking();
-        bookingService.cancelBooking(b1.getId());
+        // bookingService.cancelBooking(b1.getId());
 
-        bookingService.seatUpdate(b2.getId(), "A1", UpdateSeat.ADD);
+        // bookingService.seatUpdate(b2.getId(), "A1", UpdateSeat.ADD);
+        
+        bookingService.confirmBooking(b1.getId(), 500);
+        bookingService.confirmBooking(b2.getId(), 500);
         bookingService.viewAllBooking();
     }
 }

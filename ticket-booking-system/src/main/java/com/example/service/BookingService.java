@@ -5,12 +5,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.example.enums.BookingStatus;
+import com.example.enums.PaymentStatus;
 import com.example.enums.UpdateSeat;
 import com.example.model.Booking;
+import com.example.model.Payment;
 import com.example.model.Show;
 
 public class BookingService {
     private final List<Booking> bookings = new ArrayList<>();
+    PaymentService paymentService = new PaymentService();
 
     public Booking createBooking(String userId, Show show, List<String> seatIds){
         for(String seatId: seatIds){
@@ -31,12 +35,31 @@ public class BookingService {
         return booking;
     }
 
+    public void confirmBooking(String bookingId, double amount){
+        for(Booking booking: bookings){
+            if(booking.getId().equals(bookingId)){
+                Payment payment = paymentService.processPayment(bookingId, amount);
+
+                if(payment.getStatus() == PaymentStatus.SUCCESS){
+                    booking.setStatus(BookingStatus.CONFIRMED);
+                    System.out.println("Booking: " + bookingId + " confirmed");
+                } else {
+                    booking.setStatus(BookingStatus.CANCELLED);
+                    System.out.println("Booking: " + bookingId + " cancelled");
+                }
+
+                return;
+            }
+        }
+
+        System.out.println("No Booking: " + bookingId + " found");
+    }
+
     public void seatUpdate(String bookingId, String seatId, UpdateSeat op){
         for(Booking b: bookings){
             
             if(b.getId().equals(bookingId)){
                 List<String> existingSeatIds = new ArrayList<>(b.getSeatIds());
-                // existingSeatIds = b.getSeatIds();
 
                 switch (op) {
                     case ADD -> {
@@ -95,7 +118,8 @@ public class BookingService {
             System.out.println("Booking: " + booking.getId()+ 
                 ", User: " + booking.getUserId() + 
                 ", Show: " + booking.getShowId() +
-                ", Seats: " + booking.getSeatIds());
+                ", Seats: " + booking.getSeatIds() +
+                ", Status: " + booking.getStatus());
         }
     }
 }
