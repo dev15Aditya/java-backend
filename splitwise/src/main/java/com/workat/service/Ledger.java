@@ -1,10 +1,11 @@
 package com.workat.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.workat.entity.Expense;
+import com.workat.dto.ExpenseRequestDTO;
 import com.workat.entity.Pair;
 import com.workat.entity.SplitType;
 import com.workat.entity.User;
@@ -19,9 +20,13 @@ public class Ledger {
         users.put(u.getId(), u);
     }
 
-    public void addExpense(Expense e){
-        User paying = e.getPayer();
-        List<User> participants = e.getParticipants();
+    public void addExpense(ExpenseRequestDTO e){
+        User paying = users.get(e.getPayerId());
+        List<User> participants = new ArrayList<>();
+        for(String pId: e.getParticipantIds()){
+            participants.add(users.get(pId));
+        }
+        
         double totalAmount = e.getAmount();
 
         for(int i = 0; i<participants.size(); i++){
@@ -42,6 +47,38 @@ public class Ledger {
         }
     }
 
+    public void show(){
+        boolean flag = balanceMap.isEmpty();
+
+        if(flag){
+            System.out.println("No balances");
+        } else{
+            for(Map.Entry<Pair, Double> balance: balanceMap.entrySet()){
+                double due = balance.getValue();
+                if(due == 0) continue;
+    
+                System.out.println(balance.getKey().getU2() + " owes " + balance.getKey().getU1() + ": " + balance.getValue());
+            }
+        }
+    }
+
+    public void showOne(String id){
+        boolean flag = balanceMap.isEmpty();
+
+        if(flag){
+            System.out.println("No balances");
+        } else{
+            for(Map.Entry<Pair, Double> balance: balanceMap.entrySet()){
+                double due = balance.getValue();
+                if(due == 0) continue;
+
+                if(balance.getKey().getU1().getId().equals(id) || balance.getKey().getU2().getId().equals(id)){
+                    System.out.println(balance.getKey().getU2() + " owes " + balance.getKey().getU1() + ": " + balance.getValue());
+                }
+            }
+        }
+    }
+
     private double getShare(double totalAmount, SplitType splitType, Double val){
         return (double) (switch (splitType) {
             case EQUAL -> totalAmount/val;
@@ -49,4 +86,5 @@ public class Ledger {
             default -> (double)(totalAmount * 100)/val;
         });
     }
+
 }
