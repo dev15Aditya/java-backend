@@ -21,7 +21,7 @@ public class Ledger {
         users = du.createUsers();
     }
 
-    
+
     public void addUser(User u){
         users.put(u.getId(), u);
     }
@@ -63,7 +63,7 @@ public class Ledger {
                 double due = balance.getValue();
                 if(due == 0) continue;
     
-                System.out.println(balance.getKey().getU2() + " owes " + balance.getKey().getU1() + ": " + balance.getValue());
+                System.out.println(balance.getKey().getU2().getId() + " owes " + balance.getKey().getU1().getId() + ": " + balance.getValue());
             }
         }
     }
@@ -79,7 +79,7 @@ public class Ledger {
                 if(due == 0) continue;
 
                 if(balance.getKey().getU1().getId().equals(id) || balance.getKey().getU2().getId().equals(id)){
-                    System.out.println(balance.getKey().getU2() + " owes " + balance.getKey().getU1() + ": " + balance.getValue());
+                    System.out.println(balance.getKey().getU2().getId() + " owes " + balance.getKey().getU1().getId() + ": " + balance.getValue());
                 }
             }
         }
