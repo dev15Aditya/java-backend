@@ -11,6 +11,7 @@ import com.workat.entity.SplitType;
 public class IO {
     Scanner sc = new Scanner(System.in);
     Ledger ledger = new Ledger();
+    Validators validator = new Validators();
 
     public IO() {
         System.out.println("_____SPLIT WISE_____");

@@ -15,7 +15,13 @@ public class Ledger {
 
     // (u1, u2, balance) -> u2 owns u1 amount of 'balance'
     Map<Pair, Double> balanceMap = new HashMap<>();
+    DummyUsers du = new DummyUsers(2);
 
+    public Ledger() {
+        users = du.createUsers();
+    }
+
+    
     public void addUser(User u){
         users.put(u.getId(), u);
     }
@@ -26,7 +32,7 @@ public class Ledger {
         for(String pId: e.getParticipantIds()){
             participants.add(users.get(pId));
         }
-        
+
         double totalAmount = e.getAmount();
 
         for(int i = 0; i<participants.size(); i++){

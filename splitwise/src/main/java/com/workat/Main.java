@@ -1,7 +1,10 @@
 package com.workat;
 
+import com.workat.service.IO;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        IO io = new IO();
+        io.start();
     }
 }
